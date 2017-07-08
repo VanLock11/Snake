@@ -69,22 +69,24 @@ namespace Snake
 
         public void ReadPress()
         {
+            while (true) { 
             ConsoleKey d = Console.ReadKey().Key;
-            switch (d)
-            {
-                case ConsoleKey.LeftArrow:
-                    ux = -1;
-                    break;
-                case ConsoleKey.RightArrow:
-                    ux = 1;
-                    break;
-                case ConsoleKey.UpArrow:
-                    ux = 2;
-                    break;
-                case ConsoleKey.DownArrow:
-                    ux = -2;
-                    break;
-               
+                switch (d)
+                {
+                    case ConsoleKey.LeftArrow:
+                        ux = -1;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        ux = 1;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        ux = 2;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        ux = -2;
+                        break;
+
+                }
           
             }
 
@@ -176,13 +178,14 @@ namespace Snake
         public void Run()
         {
 
-
-            Draw();
-            Thread.Sleep(100);
-            UnDraw();
-            Muve();
-            FoodReakcion();
-            ReadPress();
+            while (true)
+            {
+                Draw();
+                Thread.Sleep(100);
+                UnDraw();
+                Muve();
+                FoodReakcion();
+            }
 
 
 
