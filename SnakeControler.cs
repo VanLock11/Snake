@@ -6,14 +6,26 @@ using System.Threading.Tasks;
 using System.Threading;
 namespace Snake
 {
+
     class SnakeControler
     {
+        enum Direction
+        {
+            Left,
+            Right,
+            Down,
+            Up
+        }
+        private KeyEvent keyt = new KeyEvent();
 
-        private int ux = 1;
+
+        private int ux = (int)Direction.Right;
         private int x, y;
         private Food food = new Food();
         private List<XYChar> list = new List<XYChar>();
         private XYChar ii = new XYChar();
+
+
         public SnakeControler(int xx = 5, int yy = 5)
         {
             food.RandomDraw();
@@ -25,10 +37,36 @@ namespace Snake
             list.Add(ii);
 
 
+            keyt.KeyPress += (tt, e) =>
+            {
+                switch (e._Key.Key)
+                {
 
+                    case ConsoleKey.RightArrow:
+
+                        ux = (int)Direction.Right;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                        ux = (int)Direction.Left;
+
+                        break;
+                    case ConsoleKey.UpArrow:
+                        ux = (int)Direction.Up;
+
+                        break;
+                    case ConsoleKey.DownArrow:
+                        ux = (int)Direction.Down;
+
+                        break;
+                    default:
+                        break;
+
+                }
+                if (list.Count > 1)
+                    RemoveIndex(list.Count - 1, 0);
+            };
 
         }
-
 
 
         public int X
@@ -67,33 +105,7 @@ namespace Snake
             }
         }
 
-        public void ReadPress()
-        {
-            while (true) { 
-            ConsoleKey d = Console.ReadKey().Key;
-                switch (d)
-                {
-                    case ConsoleKey.LeftArrow:
-                        ux = -1;
-                        break;
-                    case ConsoleKey.RightArrow:
-                        ux = 1;
-                        break;
-                    case ConsoleKey.UpArrow:
-                        ux = 2;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        ux = -2;
-                        break;
 
-                }
-          
-            }
-
-
-
-
-        }
 
         public void FoodReakcion()
         {
@@ -106,48 +118,32 @@ namespace Snake
                 list.Add(ii);
             }
         }
-
-        public void Muve()
+        public void KeyControler()
         {
-            switch (ux)
+
+            while (GameOver())
             {
-                case 1:
-
-                    ii.X = ++X;
-                    ii.Y = Y;
-                    list[list.Count - 1] = ii;
-
-
-                    break;
-                case -1:
-
-                    ii.X = --X;
-                    ii.Y = Y;
-                    list[list.Count - 1] = ii;
-
-                    break;
-                case 2:
-
-                    ii.Y = --Y;
-                    ii.X = X;
-                    list[list.Count - 1] = ii;
-
-                    break;
-                case -2:
-
-                    ii.Y = ++Y;
-                    ii.X = X;
-                    list[list.Count - 1] = ii;
-
-                    break;
-                default:
-                    break;
+                ConsoleKeyInfo d = new ConsoleKeyInfo();
+                d = Console.ReadKey();
+                keyt.OnKeyPress(d);
             }
-
-            if (list.Count > 1)
-                RemoveIndex(list.Count - 1, 0);
         }
 
+        public bool GameOver()
+        {
+            if (list.Count > 4)
+            {
+                for (int i = 1; i < list.Count-1; i++)
+                {
+                    if (list[0].X == list[i].X && list[0].Y == list[i].Y)
+                    {
+                        OnGameOver();
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
         private void RemoveIndex(int ver, int ar)
         {
             XYChar k = new XYChar(), c = new XYChar();
@@ -177,20 +173,72 @@ namespace Snake
         }
         public void Run()
         {
-
-            while (true)
+            while (GameOver())
             {
+
                 Draw();
-                Thread.Sleep(100);
+                Thread.Sleep(90);
                 UnDraw();
+                
                 Muve();
                 FoodReakcion();
             }
-
-
-
-
         }
+        public void Muve()
+        {
+            switch ((Direction)ux)
+            {
 
+                case Direction.Right:
+                    {
+
+                        ii.X = ++X;
+                        ii.Y = Y;
+                        list[list.Count - 1] = ii;
+
+                    }
+                    break;
+                case Direction.Left:
+                    {
+
+                        ii.X = --X;
+                        ii.Y = Y;
+                        list[list.Count - 1] = ii;
+
+                    }
+                    break;
+                case Direction.Up:
+                    {
+                        
+                            ii.Y = --Y;
+                            ii.X = X;
+                            list[list.Count - 1] = ii;
+                        
+                    }
+
+
+                    break;
+                case Direction.Down:
+                    {
+                       
+                            ii.Y = ++Y;
+                            ii.X = X;
+                            list[list.Count - 1] = ii;
+                        
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+            if (list.Count > 1)
+                RemoveIndex(list.Count - 1, 0);
+        }
+        public void OnGameOver()
+        {
+            Console.Clear();
+            Console.SetCursorPosition((Console.WindowWidth / 2) - 10, Console.WindowHeight / 2);
+            Console.WriteLine("Game Over!!!");
+        }
     }
 }

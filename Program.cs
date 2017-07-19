@@ -11,7 +11,7 @@ namespace Snake
         static void Main(string[] args)
         {
             SnakeControler z = new SnakeControler(10, 20);
-            ThreadStart s = new ThreadStart(z.ReadPress);
+            ThreadStart s = new ThreadStart(z.KeyControler);
             Thread st = new Thread(s);
             st.Start();
             Thread run = new Thread(new ThreadStart(z.Run));
