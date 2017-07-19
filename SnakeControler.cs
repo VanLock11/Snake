@@ -25,7 +25,7 @@ namespace Snake
         private List<XYChar> list = new List<XYChar>();
         private XYChar ii = new XYChar();
 
-
+        //Constructor 
         public SnakeControler(int xx = 5, int yy = 5)
         {
             food.RandomDraw();
@@ -68,8 +68,8 @@ namespace Snake
 
         }
 
-
-        public int X
+        //Variable to cordinats
+        private int X
         {
             get
             {
@@ -86,8 +86,7 @@ namespace Snake
                     x = Console.WindowWidth - 1;
             }
         }
-
-        public int Y
+        private int Y
         {
             get
             {
@@ -105,8 +104,7 @@ namespace Snake
             }
         }
 
-
-
+        //Food Controler 
         public void FoodReakcion()
         {
             if (food.X == X && food.Y == Y)
@@ -120,6 +118,8 @@ namespace Snake
                 list.Add(ii);
             }
         }
+
+        //Key input processing with event .To facilitate working in Main
         public void KeyControler()
         {
 
@@ -131,6 +131,108 @@ namespace Snake
             }
         }
 
+        //Permutation of indices
+        private void RemoveIndex(int ver, int ar)
+        {
+            XYChar k = new XYChar(), c = new XYChar();
+            k = list[ar];
+            list[ar] = list[ver];
+            for (int i = ar + 1; i <= ver; i++)
+            {
+                c = list[i];
+                list[i] = k;
+                k = c;
+            }
+        }
+
+        //Draw Snaeke 1element
+        void Draw()
+        {
+
+
+            Console.SetCursorPosition(list[0].X, list[0].Y);
+            Console.Write(list[0]);
+
+        }
+
+
+        //Delete Snake end element
+        public void UnDraw()
+        {
+
+            Console.SetCursorPosition(list[list.Count - 1].X, list[list.Count - 1].Y);
+            Console.WriteLine(' ');
+
+        }
+
+        //Necessary function to facilitate working in Main
+        public void Run()
+        {
+            while (GameOver())
+            {
+
+                Draw();
+                Thread.Sleep(90);
+                UnDraw();
+                Muve();
+                FoodReakcion();
+
+            }
+        }
+
+        //Mechanics of coordinate motion
+        public void Muve()
+        {
+            switch ((Direction)ux)
+            {
+
+                case Direction.Right:
+                    {
+
+                        ii.X = ++X;
+                        ii.Y = Y;
+                        list[list.Count - 1] = ii;
+
+                    }
+                    break;
+                case Direction.Left:
+                    {
+
+                        ii.X = --X;
+                        ii.Y = Y;
+                        list[list.Count - 1] = ii;
+
+                    }
+                    break;
+                case Direction.Up:
+                    {
+
+                        ii.Y = --Y;
+                        ii.X = X;
+                        list[list.Count - 1] = ii;
+
+                    }
+
+
+                    break;
+                case Direction.Down:
+                    {
+
+                        ii.Y = ++Y;
+                        ii.X = X;
+                        list[list.Count - 1] = ii;
+
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+            if (list.Count > 1)
+                RemoveIndex(list.Count - 1, 0);
+        }
+
+        //Variable to facilitate completion
         public bool GameOver()
         {
             if (list.Count > 4)
@@ -146,124 +248,8 @@ namespace Snake
             }
             return true;
         }
-        private void RemoveIndex(int ver, int ar)
-        {
-            XYChar k = new XYChar(), c = new XYChar();
-            k = list[ar];
-            list[ar] = list[ver];
-            for (int i = ar + 1; i <= ver; i++)
-            {
-                c = list[i];
-                list[i] = k;
-                k = c;
-            }
-        }
-        void Draw()
-        {
 
-
-            Console.SetCursorPosition(list[0].X, list[0].Y);
-            Console.Write(list[0]);
-
-        }
-        public void UnDraw()
-        {
-
-            Console.SetCursorPosition(list[list.Count - 1].X, list[list.Count - 1].Y);
-            Console.WriteLine(' ');
-
-        }
-        public void Run()
-        {
-            while (GameOver())
-            {
-
-                Draw();
-                Thread.Sleep(90);
-                UnDraw();
-                Muve();
-                FoodReakcion();
-                // KeyControler();
-            }
-        }
-        public void Muve()
-        {
-            switch ((Direction)ux)
-            {
-
-                case Direction.Right:
-                    {
-                        if (list.Count == 1)
-                        {
-                            ii.X = ++X;
-                            ii.Y = Y;
-                            list[list.Count - 1] = ii;
-                        }
-                        else if (list[0].X >= list[1].X)
-                        {       ii.X = ++X;
-                        ii.Y = Y;
-                        list[list.Count - 1] = ii;
-                    }
-                    }
-                    break;
-                case Direction.Left:
-                    {
-                        if (list.Count == 1)
-                        {
-                            ii.X = --X;
-                            ii.Y = Y;
-                            list[list.Count - 1] = ii;
-                        }
-                        else if (list[0].X <= list[1].X)
-                        {
-                            ii.X = --X;
-                            ii.Y = Y;
-                            list[list.Count - 1] = ii;
-                        }
-                    }
-                    break;
-                case Direction.Up:
-                    {
-
-                        if (list.Count == 1)
-                        {
-                            ii.Y = --Y;
-                            ii.X = X;
-                            list[list.Count - 1] = ii;
-                        }
-                        else if (list[0].Y <= list[1].Y)
-                        {
-                            ii.Y = --Y;
-                            ii.X = X;
-                            list[list.Count - 1] = ii;
-                        }
-                    }
-
-
-                    break;
-                case Direction.Down:
-                    {
-                        if (list.Count == 1)
-                        {
-                            ii.Y = ++Y;
-                            ii.X = X;
-                            list[list.Count - 1] = ii;
-                        }
-                        else if (list[0].Y >= list[1].Y)
-                        {
-                            ii.Y = ++Y;
-                            ii.X = X;
-                            list[list.Count - 1] = ii;
-                        }
-                    }
-                    break;
-                default:
-                    break;
-
-            }
-            if (list.Count > 1)
-                RemoveIndex(list.Count - 1, 0);
-        }
+        //The end
         public void OnGameOver()
         {
             Console.Clear();

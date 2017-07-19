@@ -14,7 +14,7 @@ namespace Snake
             set { _key = value; }
             get { return _key; }
         }
-        public char Ch { set; get; }
+        
     }
 
   public class KeyEvent

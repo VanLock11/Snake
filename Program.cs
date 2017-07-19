@@ -17,9 +17,10 @@ namespace Snake
             thread_KeyControler.Start();
             sneyk.Run();
             if (!sneyk.GameOver())
+            {
                 thread_KeyControler.Abort();
-         
-           
+            }
+
 
         }
     }
