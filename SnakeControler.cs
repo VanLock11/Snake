@@ -111,6 +111,8 @@ namespace Snake
         {
             if (food.X == X && food.Y == Y)
             {
+                Console.SetCursorPosition(food.X, food.Y);
+                Console.Write(' ');
                 food.RandomDraw();
                 ii.X = X;
                 ii.Y = Y;
@@ -133,7 +135,7 @@ namespace Snake
         {
             if (list.Count > 4)
             {
-                for (int i = 1; i < list.Count-1; i++)
+                for (int i = 1; i < list.Count - 1; i++)
                 {
                     if (list[0].X == list[i].X && list[0].Y == list[i].Y)
                     {
@@ -158,18 +160,18 @@ namespace Snake
         }
         void Draw()
         {
-            for (int i = 0; i < list.Count; i++)
-            {
-                Console.SetCursorPosition(list[i].X, list[i].Y);
-                Console.Write(list[i]);
-            }
+
+
+            Console.SetCursorPosition(list[0].X, list[0].Y);
+            Console.Write(list[0]);
+
         }
         public void UnDraw()
         {
 
             Console.SetCursorPosition(list[list.Count - 1].X, list[list.Count - 1].Y);
             Console.WriteLine(' ');
-            Console.SetCursorPosition(X, Y);
+
         }
         public void Run()
         {
@@ -179,9 +181,9 @@ namespace Snake
                 Draw();
                 Thread.Sleep(90);
                 UnDraw();
-                
                 Muve();
                 FoodReakcion();
+                // KeyControler();
             }
         }
         public void Muve()
@@ -191,40 +193,68 @@ namespace Snake
 
                 case Direction.Right:
                     {
-
-                        ii.X = ++X;
+                        if (list.Count == 1)
+                        {
+                            ii.X = ++X;
+                            ii.Y = Y;
+                            list[list.Count - 1] = ii;
+                        }
+                        else if (list[0].X >= list[1].X)
+                        {       ii.X = ++X;
                         ii.Y = Y;
                         list[list.Count - 1] = ii;
-
+                    }
                     }
                     break;
                 case Direction.Left:
                     {
-
-                        ii.X = --X;
-                        ii.Y = Y;
-                        list[list.Count - 1] = ii;
-
+                        if (list.Count == 1)
+                        {
+                            ii.X = --X;
+                            ii.Y = Y;
+                            list[list.Count - 1] = ii;
+                        }
+                        else if (list[0].X <= list[1].X)
+                        {
+                            ii.X = --X;
+                            ii.Y = Y;
+                            list[list.Count - 1] = ii;
+                        }
                     }
                     break;
                 case Direction.Up:
                     {
-                        
+
+                        if (list.Count == 1)
+                        {
                             ii.Y = --Y;
                             ii.X = X;
                             list[list.Count - 1] = ii;
-                        
+                        }
+                        else if (list[0].Y <= list[1].Y)
+                        {
+                            ii.Y = --Y;
+                            ii.X = X;
+                            list[list.Count - 1] = ii;
+                        }
                     }
 
 
                     break;
                 case Direction.Down:
                     {
-                       
+                        if (list.Count == 1)
+                        {
                             ii.Y = ++Y;
                             ii.X = X;
                             list[list.Count - 1] = ii;
-                        
+                        }
+                        else if (list[0].Y >= list[1].Y)
+                        {
+                            ii.Y = ++Y;
+                            ii.X = X;
+                            list[list.Count - 1] = ii;
+                        }
                     }
                     break;
                 default:

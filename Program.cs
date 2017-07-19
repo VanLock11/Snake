@@ -10,13 +10,14 @@ namespace Snake
     {
         static void Main(string[] args)
         {
-            SnakeControler z = new SnakeControler(10, 20);
-            ThreadStart s = new ThreadStart(z.KeyControler);
-            Thread st = new Thread(s);
-            st.Start();
-            Thread run = new Thread(new ThreadStart(z.Run));
-            run.Start();
-
+            //Create a thread for asynchronous work
+            SnakeControler sneyk = new SnakeControler(10, 20);
+            ThreadStart pressKeyFunction = new ThreadStart(sneyk.KeyControler);
+            Thread thread_KeyControler = new Thread(pressKeyFunction);
+            thread_KeyControler.Start();
+            sneyk.Run();
+            if (!sneyk.GameOver())
+                thread_KeyControler.Abort();
          
            
 
