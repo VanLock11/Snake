@@ -150,7 +150,7 @@ namespace Snake
         {
 
 
-            Console.SetCursorPosition(list[0].X, list[0].Y);
+            Console.SetCursorPosition(X, Y);
             Console.Write(list[0]);
 
         }
